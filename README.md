@@ -1,36 +1,117 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Kontrakku Frontend
 
-## Getting Started
+Kontrakku adalah alat yang dirancang untuk menganalisis kontrak kerja dan kontrak freelance, membuat bahasa hukum yang kompleks menjadi lebih mudah dipahami bagi pekerja di Indonesia. Aplikasi ini membantu pengguna memahami poin-poin kunci, mengidentifikasi potensi risiko, dan mengajukan pertanyaan yang relevan tentang kontrak mereka.
 
-First, run the development server:
+## Fitur Utama
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- **Penjelasan Kontrak**
+
+  - Menerjemahkan bahasa hukum yang kompleks menjadi bahasa yang mudah dipahami
+  - Memberikan ringkasan poin-poin utama kontrak
+
+- **Penilaian Risiko**
+
+  - Mengidentifikasi klausul yang berpotensi berisiko
+  - Menjelaskan mengapa klausul tertentu bisa mengkhawatirkan
+  - Memberikan skor keamanan untuk evaluasi kontrak
+
+- **Tanya Jawab Interaktif**
+
+  - Antarmuka chat untuk mengajukan pertanyaan spesifik tentang kontrak
+  - Jawaban berbasis AI berdasarkan konteks kontrak
+  - Saran pertanyaan disesuaikan dengan jenis kontrak dan industri
+
+- **Analisis Keamanan**
+  - Evaluasi keamanan kontrak yang komprehensif
+  - Sistem penilaian terperinci dengan penjelasan
+  - Rekomendasi untuk perbaikan
+
+## Tech Stack
+
+- **Framework:** Next.js 15.3
+- **Language:** TypeScript
+- **Styling:** TailwindCSS
+- **Package Manager:** Bun
+- **State Management:** React Context
+- **UI Components:** Custom components with TailwindCSS
+
+## Panduan Memulai
+
+### Prasyarat
+
+- Node.js 18.0 atau lebih tinggi
+- Bun (versi terbaru)
+
+### Instalasi
+
+1. Clone repository:
+
+   ```bash
+   git clone https://github.com/asrafilll/kontrakku-fe.git
+   ```
+
+2. Masuk ke direktori proyek:
+
+   ```bash
+   cd kontrakku-fe
+   ```
+
+3. Install dependencies:
+
+   ```bash
+   bun install
+   ```
+
+4. Buat file `.env.local` di root direktori dan tambahkan environment variables yang diperlukan:
+
+   ```env
+   NEXT_PUBLIC_API_URL=your_backend_url
+   ```
+
+5. Jalankan development server:
+
+   ```bash
+   bun dev
+   ```
+
+6. Buka [http://localhost:3000](http://localhost:3000) di browser Anda.
+
+## Struktur Proyek
+
+```
+src/
+├── app/           # Next.js app router pages
+├── components/    # Komponen UI yang dapat digunakan kembali
+├── lib/          # Fungsi utilitas dan helpers
+├── types/        # Definisi tipe TypeScript
+├── contexts/     # React Context providers
+└── services/     # Fungsi layanan API
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Pengembangan
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Code Style:** Proyek menggunakan ESLint dan Prettier untuk formatting kode
+- **Commits:** Ikuti conventional commit messages
+- **Branch Strategy:** Feature branches harus dibuat dari `main`
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Kontribusi
 
-## Learn More
+1. Fork repository
+2. Buat feature branch (`git checkout -b feature/fitur-baru`)
+3. Commit perubahan (`git commit -m 'feat: menambahkan fitur baru'`)
+4. Push ke branch (`git push origin feature/fitur-baru`)
+5. Buat Pull Request
 
-To learn more about Next.js, take a look at the following resources:
+## Lisensi
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Proyek ini dilisensikan di bawah Lisensi MIT - lihat file LICENSE untuk detail.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Proyek Terkait
 
-## Deploy on Vercel
+- [Kontrakku Backend](https://github.com/asrafilll/kontrakku-be) - Repository backend Django
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Catatan Penting
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Aplikasi ini dirancang khusus untuk pengguna Indonesia
+- Semua konten dan antarmuka pengguna dalam Bahasa Indonesia
+- Analisis kontrak disesuaikan dengan hukum ketenagakerjaan Indonesia
