@@ -113,8 +113,8 @@ export default function SyaratKetentuanPage() {
                 Pembatasan Tanggung Jawab
               </h2>
               <p className="text-gray-700">
-                Kontrakku menyediakan platform "sebagaimana adanya" tanpa
-                jaminan apapun. Kami tidak bertanggung jawab atas kerugian
+                Kontrakku menyediakan platform &ldquo;sebagaimana adanya&rdquo;
+                tanpa jaminan apapun. Kami tidak bertanggung jawab atas kerugian
                 langsung, tidak langsung, atau konsekuensial yang timbul dari
                 penggunaan platform.
               </p>
