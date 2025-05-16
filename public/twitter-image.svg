@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1200" height="600" viewBox="0 0 1200 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="600" fill="#2563EB"/>
+  <rect x="0" y="0" width="1200" height="600" fill="url(#gradient)"/>
+  
+  <!-- Logo -->
+  <g transform="translate(100, 160)">
+    <path d="M40 30L60 50L40 70" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M60 30L40 50L60 70" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="80" y="60" font-family="Inter, sans-serif" font-size="48" font-weight="700" fill="#FFFFFF">Kontrakku</text>
+  </g>
+  
+  <!-- Main Text -->
+  <text x="100" y="320" font-family="Inter, sans-serif" font-size="56" font-weight="700" fill="#FFFFFF">Pahami Kontrak Kerja</text>
+  <text x="100" y="390" font-family="Inter, sans-serif" font-size="56" font-weight="700" fill="#FFFFFF">dengan Mudah</text>
+  
+  <!-- Subtitle -->
+  <text x="100" y="460" font-family="Inter, sans-serif" font-size="28" font-weight="400" fill="#FFFFFF" opacity="0.9">
+    Analisis kontrak kerja dengan AI dalam hitungan menit
+  </text>
+  
+  <!-- Gradient Definition -->
+  <defs>
+    <linearGradient id="gradient" x1="0" y1="0" x2="1200" y2="600" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#2563EB"/>
+      <stop offset="100%" stop-color="#1D4ED8"/>
+    </linearGradient>
+  </defs>
+</svg> 
