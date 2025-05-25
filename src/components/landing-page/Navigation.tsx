@@ -54,13 +54,13 @@ export const Navigation = () => {
           <Link href="/login">
             <Button
               variant="ghost"
-              className="text-gray-700 hover:text-blue-600"
+              className="text-gray-700 hover:text-white hover:cursor-pointer"
             >
               Masuk
             </Button>
           </Link>
           <Link href="/register">
-            <Button className="bg-blue-600 text-white hover:bg-blue-700">
+            <Button className="bg-blue-600 text-white hover:bg-blue-700 hover:cursor-pointer">
               Daftar Gratis
             </Button>
           </Link>
@@ -100,7 +100,7 @@ export const Navigation = () => {
               >
                 <Button
                   variant="ghost"
-                  className="w-full justify-start text-gray-700 hover:text-blue-600"
+                  className="w-full justify-start text-gray-700 hover:text-white! bg-blue-600"
                 >
                   Masuk
                 </Button>

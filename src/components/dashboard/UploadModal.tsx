@@ -15,7 +15,7 @@ import { uploadContract, ApiError } from "@/lib/api";
 interface UploadModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onUploadSuccess: () => void;
+  onUploadSuccess: (contractId?: string) => void;
 }
 
 export default function UploadModal({
@@ -96,9 +96,9 @@ export default function UploadModal({
       console.log("Upload successful:", response);
       setUploadSuccess(true);
 
-      // Wait a moment to show success state, then close modal and refresh
+      // Wait a moment to show success state, then close modal and redirect to chat
       setTimeout(() => {
-        onUploadSuccess();
+        onUploadSuccess(response.contract_id);
         handleClose();
       }, 1500);
     } catch (err) {

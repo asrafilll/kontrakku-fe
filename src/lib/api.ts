@@ -3,6 +3,7 @@ import {
   ContractsResponse,
   ChatMessage,
   ChatHistoryResponse,
+  ContractStatus,
 } from "./types";
 
 const API_BASE_URL = "http://194.233.68.50:8000/api/v1";
@@ -91,5 +92,41 @@ export async function fetchChatHistory(
       throw error;
     }
     throw new Error("Network error occurred while fetching chat history");
+  }
+}
+
+export async function fetchContractStatus(
+  contractId: string
+): Promise<ContractStatus> {
+  try {
+    const response = await fetch(
+      `${API_BASE_URL}/contracts/status/${contractId}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      throw new ApiError(
+        response.status,
+        errorData.message || `HTTP error! status: ${response.status}`
+      );
+    }
+
+    const data: ContractStatus = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching contract status:", error);
+    if (error instanceof ApiError) {
+      throw error;
+    }
+    throw new ApiError(
+      0,
+      error instanceof Error ? error.message : "Unknown error occurred"
+    );
   }
 }

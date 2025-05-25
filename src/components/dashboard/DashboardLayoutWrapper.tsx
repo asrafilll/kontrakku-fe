@@ -44,8 +44,12 @@ export default function DashboardLayoutWrapper({
             setSelectedContract(contract);
           } else {
             // Contract not found, redirect to dashboard
+            setSelectedContract(null);
             router.push("/dashboard");
           }
+        } else {
+          // No contract ID in URL, clear selection
+          setSelectedContract(null);
         }
       } catch (error) {
         console.error("Failed to load contracts:", error);
@@ -56,9 +60,15 @@ export default function DashboardLayoutWrapper({
   }, [initialContractId, router]);
 
   const handleLogout = () => {
-    // Implement logout logic here
-    console.log("Logging out...");
+    // Clear auth data
+    localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem("userEmail");
+
+    // Close modal
     setShowLogoutModal(false);
+
+    // Redirect to login
+    router.push("/login");
   };
 
   const handleContractSelect = (contract: Contract) => {
@@ -67,9 +77,14 @@ export default function DashboardLayoutWrapper({
     router.push(`/dashboard/chat/${contract.contract_id}`);
   };
 
-  const handleUploadSuccess = () => {
+  const handleUploadSuccess = (contractId?: string) => {
     // Refresh the contracts list by updating the key
     setRefreshKey((prev) => prev + 1);
+
+    // If we have a contractId, redirect to that chat room
+    if (contractId) {
+      router.push(`/dashboard/chat/${contractId}`);
+    }
   };
 
   const openUploadModal = () => {
@@ -119,7 +134,9 @@ export default function DashboardLayoutWrapper({
                 <User className="w-5 h-5 text-gray-300" />
               </div>
               <span className="text-sm font-medium text-gray-300">
-                John Doe
+                {typeof window !== "undefined"
+                  ? localStorage.getItem("userEmail") || "Admin"
+                  : "Admin"}
               </span>
             </div>
             <Button

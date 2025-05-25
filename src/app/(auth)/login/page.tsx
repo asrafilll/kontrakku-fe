@@ -1,13 +1,23 @@
+"use client";
+
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { LoginForm } from "@/components/auth/LoginForm";
 
-export const metadata = {
-  title: "Masuk | Kontrakku",
-  description:
-    "Masuk ke akun Kontrakku Anda untuk menganalisis dan memahami kontrak kerja dengan mudah.",
-};
-
 export default function LoginPage() {
+  const router = useRouter();
+
+  useEffect(() => {
+    // Check if user is already logged in
+    const isLoggedIn = localStorage.getItem("isLoggedIn");
+    const userEmail = localStorage.getItem("userEmail");
+
+    if (isLoggedIn === "true" && userEmail === "admin@mail.com") {
+      router.push("/dashboard");
+    }
+  }, [router]);
+
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">

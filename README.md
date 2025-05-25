@@ -1,117 +1,50 @@
-# Kontrakku Frontend
-
-Kontrakku adalah alat yang dirancang untuk menganalisis kontrak kerja dan kontrak freelance, membuat bahasa hukum yang kompleks menjadi lebih mudah dipahami bagi pekerja di Indonesia. Aplikasi ini membantu pengguna memahami poin-poin kunci, mengidentifikasi potensi risiko, dan mengajukan pertanyaan yang relevan tentang kontrak mereka.
+# Kontrakku - Aplikasi Analisis Kontrak Kerja
 
 ## Fitur Utama
 
-- **Penjelasan Kontrak**
+1. **Autentikasi Sederhana**: Login dengan email `admin@mail.com` dan password `123`
+2. **Upload & Analisis Kontrak**: Upload file PDF kontrak untuk dianalisis AI
+3. **Analisis Komprehensif**:
+   - Ringkasan kontrak
+   - Identifikasi red flags dan klausul bermasalah
+   - Analisis topik yang tercakup/belum tercakup
+   - Detail setiap klausul dengan rekomendasi
+4. **Chat Assistant**: Tanya jawab interaktif dengan AI tentang kontrak
+5. **Re-check Analisis**: Tombol di chat room untuk melihat ulang analisis dalam modal
 
-  - Menerjemahkan bahasa hukum yang kompleks menjadi bahasa yang mudah dipahami
-  - Memberikan ringkasan poin-poin utama kontrak
+## Teknologi
 
-- **Penilaian Risiko**
+- Next.js 14 dengan App Router
+- TypeScript
+- Tailwind CSS
+- Lucide React Icons
+- WebSocket untuk real-time chat
 
-  - Mengidentifikasi klausul yang berpotensi berisiko
-  - Menjelaskan mengapa klausul tertentu bisa mengkhawatirkan
-  - Memberikan skor keamanan untuk evaluasi kontrak
+## Cara Menjalankan
 
-- **Tanya Jawab Interaktif**
-
-  - Antarmuka chat untuk mengajukan pertanyaan spesifik tentang kontrak
-  - Jawaban berbasis AI berdasarkan konteks kontrak
-  - Saran pertanyaan disesuaikan dengan jenis kontrak dan industri
-
-- **Analisis Keamanan**
-  - Evaluasi keamanan kontrak yang komprehensif
-  - Sistem penilaian terperinci dengan penjelasan
-  - Rekomendasi untuk perbaikan
-
-## Tech Stack
-
-- **Framework:** Next.js 15.3
-- **Language:** TypeScript
-- **Styling:** TailwindCSS
-- **Package Manager:** Bun
-- **State Management:** React Context
-- **UI Components:** Custom components with TailwindCSS
-
-## Panduan Memulai
-
-### Prasyarat
-
-- Node.js 18.0 atau lebih tinggi
-- Bun (versi terbaru)
-
-### Instalasi
-
-1. Clone repository:
-
-   ```bash
-   git clone https://github.com/asrafilll/kontrakku-fe.git
-   ```
-
-2. Masuk ke direktori proyek:
-
-   ```bash
-   cd kontrakku-fe
-   ```
-
-3. Install dependencies:
-
-   ```bash
-   bun install
-   ```
-
-4. Buat file `.env.local` di root direktori dan tambahkan environment variables yang diperlukan:
-
-   ```env
-   NEXT_PUBLIC_API_URL=your_backend_url
-   ```
-
-5. Jalankan development server:
-
-   ```bash
-   bun dev
-   ```
-
-6. Buka [http://localhost:3000](http://localhost:3000) di browser Anda.
-
-## Struktur Proyek
-
-```
-src/
-├── app/           # Next.js app router pages
-├── components/    # Komponen UI yang dapat digunakan kembali
-├── lib/          # Fungsi utilitas dan helpers
-├── types/        # Definisi tipe TypeScript
-├── contexts/     # React Context providers
-└── services/     # Fungsi layanan API
+```bash
+npm install
+npm run dev
 ```
 
-## Pengembangan
+Aplikasi akan berjalan di `http://localhost:3000`
 
-- **Code Style:** Proyek menggunakan ESLint dan Prettier untuk formatting kode
-- **Commits:** Ikuti conventional commit messages
-- **Branch Strategy:** Feature branches harus dibuat dari `main`
+## Flow Aplikasi
 
-## Kontribusi
+1. **Login**: Masuk dengan kredensial admin
+2. **Dashboard**: Upload kontrak baru atau pilih kontrak existing
+3. **Analisis**: Tunggu proses analisis selesai dan lihat hasilnya
+4. **Chat**: Lanjut ke chat assistant untuk tanya jawab detail
+5. **Re-check**: Gunakan tombol "Lihat Analisis" di chat room untuk melihat analisis lagi
 
-1. Fork repository
-2. Buat feature branch (`git checkout -b feature/fitur-baru`)
-3. Commit perubahan (`git commit -m 'feat: menambahkan fitur baru'`)
-4. Push ke branch (`git push origin feature/fitur-baru`)
-5. Buat Pull Request
+## API Endpoints
 
-## Lisensi
+- `POST /api/v1/contracts/upload` - Upload kontrak baru
+- `GET /api/v1/contracts/status/{id}` - Cek status dan hasil analisis
+- `GET /api/v1/contracts` - List semua kontrak
+- WebSocket `/ws/chat/{contract_id}` - Real-time chat
 
-Proyek ini dilisensikan di bawah Lisensi MIT - lihat file LICENSE untuk detail.
+## Demo
 
-## Proyek Terkait
-
-- [Kontrakku Backend](https://github.com/asrafilll/kontrakku-be) - Repository backend Django
-
-## Catatan Penting
-
-- Aplikasi ini dirancang khusus untuk pengguna Indonesia
-- Semua konten dan antarmuka pengguna dalam Bahasa Indonesia
-- Analisis kontrak disesuaikan dengan hukum ketenagakerjaan Indonesia
+Username: `admin@mail.com`  
+Password: `123`

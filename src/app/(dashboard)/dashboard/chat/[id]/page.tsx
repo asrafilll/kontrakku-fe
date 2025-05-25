@@ -1,4 +1,4 @@
-import DashboardLayoutWrapper from "@/components/dashboard/DashboardLayoutWrapper";
+import { Metadata } from "next";
 
 interface ChatPageProps {
   params: Promise<{
@@ -6,7 +6,18 @@ interface ChatPageProps {
   }>;
 }
 
-export default async function ChatPage({ params }: ChatPageProps) {
+export async function generateMetadata({
+  params,
+}: ChatPageProps): Promise<Metadata> {
   const { id } = await params;
-  return <DashboardLayoutWrapper initialContractId={id} />;
+  return {
+    title: `Chat - ${id} | Kontrakku`,
+    description: "Analisis kontrak dengan AI",
+  };
+}
+
+export default function ChatPage() {
+  // The layout wrapper handles all the UI rendering
+  // This page only exists for routing purposes
+  return null;
 }

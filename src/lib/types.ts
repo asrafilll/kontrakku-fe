@@ -18,3 +18,30 @@ export interface ChatMessage {
 export interface ChatHistoryResponse {
   chats: ChatMessage[];
 }
+
+export interface ContractClause {
+  clauseTopic: string;
+  clauseContent: string;
+  clauseSummary: string;
+  vague: boolean;
+  redFlag: boolean;
+  issueReason: string;
+  questions: string[];
+}
+
+export interface ContractSummary {
+  fileName: string;
+  contractSummary: string;
+  coveredTopic: string[];
+  uncoveredTopic: string[];
+  clauses: ContractClause[];
+}
+
+export interface ContractStatus {
+  contract_id: string;
+  file_name: string;
+  status: "PROCESSING" | "DONE" | "ERROR";
+  created_at: string;
+  updated_at: string;
+  summary?: ContractSummary;
+}
