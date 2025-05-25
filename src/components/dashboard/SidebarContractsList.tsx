@@ -107,13 +107,6 @@ export default function SidebarContractsList({
                 {formatDate(contract.created_at)}
               </p>
             </div>
-            <div
-              className={`w-2 h-2 rounded-full ${
-                selectedContractId === contract.contract_id
-                  ? "bg-green-400"
-                  : "bg-green-400"
-              }`}
-            />
           </div>
         </button>
       ))}

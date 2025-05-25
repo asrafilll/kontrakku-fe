@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import ReactMarkdown from "react-markdown";
 import {
   AlertTriangle,
   CheckCircle,
@@ -112,9 +113,9 @@ export default function ContractSummaryComponent({
               <h5 className="font-medium text-gray-800 mb-2">
                 Ringkasan Klausul:
               </h5>
-              <p className="text-sm text-gray-700 leading-relaxed">
-                {clause.clauseSummary}
-              </p>
+              <div className="text-sm text-gray-700 leading-relaxed prose prose-sm max-w-none [&>p]:mb-2 [&>ul]:mb-2 [&>ol]:mb-2">
+                <ReactMarkdown>{clause.clauseSummary}</ReactMarkdown>
+              </div>
             </div>
 
             {clause.issueReason && (
@@ -122,9 +123,9 @@ export default function ContractSummaryComponent({
                 <h5 className="font-medium text-red-800 mb-2">
                   Alasan Masalah:
                 </h5>
-                <p className="text-sm text-red-700 leading-relaxed">
-                  {clause.issueReason}
-                </p>
+                <div className="text-sm text-red-700 leading-relaxed prose prose-sm max-w-none [&>p]:mb-2 [&>ul]:mb-2 [&>ol]:mb-2">
+                  <ReactMarkdown>{clause.issueReason}</ReactMarkdown>
+                </div>
               </div>
             )}
 
@@ -220,10 +221,8 @@ export default function ContractSummaryComponent({
         <h2 className="text-xl font-semibold text-blue-900 mb-3">
           Ringkasan Kontrak
         </h2>
-        <div className="prose prose-sm max-w-none">
-          <p className="text-blue-800 leading-relaxed whitespace-pre-wrap">
-            {summary.contractSummary}
-          </p>
+        <div className="prose prose-sm max-w-none text-blue-800 leading-relaxed [&>p]:mb-3 [&>ul]:mb-3 [&>ol]:mb-3 [&>h1]:text-blue-900 [&>h2]:text-blue-900 [&>h3]:text-blue-900 [&>strong]:text-blue-900">
+          <ReactMarkdown>{summary.contractSummary}</ReactMarkdown>
         </div>
       </div>
 
