@@ -1,5 +1,6 @@
-import { ArrowRight, FileText } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import { Button } from "@/components/ui/Button";
 import { Section } from "./common";
 
@@ -35,13 +36,17 @@ export const Hero = () => {
           </Button>
         </Link>
       </div>
-      {/* Optional: Placeholder for a subtle background graphic or a product screenshot teaser */}
+      {/* Product screenshot */}
       <div className="mt-16 md:mt-24 max-w-4xl mx-auto">
-        <div className="aspect-video bg-gray-100 rounded-xl shadow-2xl flex items-center justify-center">
-          <FileText size={64} className="text-blue-400" />
-          <p className="ml-4 text-blue-600">
-            Visualisasi Proses Analisis Kontrak
-          </p>
+        <div className="rounded-xl shadow-2xl overflow-hidden">
+          <Image
+            src="/kontrakku.png"
+            alt="Kontrakku - Proses Analisis Kontrak"
+            width={1200}
+            height={1040}
+            className="w-full h-auto"
+            priority
+          />
         </div>
       </div>
     </Section>
