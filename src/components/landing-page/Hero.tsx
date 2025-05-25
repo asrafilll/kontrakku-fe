@@ -16,7 +16,7 @@ export const Hero = () => {
         jelas, mengidentifikasi risiko, dan membantu Anda bertanya dengan tepat.
       </p>
       <div className="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-4">
-        <Link href="/register">
+        <Link href="/login">
           <Button
             size="lg"
             className="w-full sm:w-auto group bg-blue-600 text-white hover:bg-blue-700"

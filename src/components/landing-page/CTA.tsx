@@ -13,7 +13,7 @@ export const CTA = () => {
           Jangan biarkan bahasa hukum yang rumit menghalangi Anda. Coba
           Kontrakku sekarang dan rasakan bedanya.
         </p>
-        <Link href="/register">
+        <Link href="/login">
           <Button
             size="lg"
             variant="outline"
