@@ -1,7 +1,7 @@
 export interface Contract {
   contract_id: string;
   file_name: string;
-  processing_status: "DONE" | "PROCESSING" | "FAILED";
+  processing_status: "DONE" | "PROCESSING" | "FAILED" | "PENDING";
   created_at: string;
 }
 
@@ -40,7 +40,7 @@ export interface ContractSummary {
 export interface ContractStatus {
   contract_id: string;
   file_name: string;
-  status: "PROCESSING" | "DONE" | "ERROR";
+  status: "PENDING" | "PROCESSING" | "DONE" | "ERROR";
   created_at: string;
   updated_at: string;
   summary?: ContractSummary;

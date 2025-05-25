@@ -191,7 +191,7 @@ export default function UploadModal({
                     <Upload className="w-12 h-12 text-gray-400 mx-auto" />
                     <div>
                       <p className="text-lg font-medium text-gray-900">
-                        Seret file PDF ke sini
+                        Taruh file PDF ke sini
                       </p>
                       <p className="text-gray-500">atau</p>
                     </div>

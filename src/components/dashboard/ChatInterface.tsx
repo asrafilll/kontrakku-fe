@@ -71,7 +71,7 @@ export default function ChatInterface({ contract }: ChatInterfaceProps) {
           // Status DONE but no summary, go directly to chat
           setShowChat(true);
         }
-        // If status is PROCESSING, keep polling
+        // If status is PROCESSING, keep polling every 3 seconds
         else if (status.status === "PROCESSING") {
           // Poll every 3 seconds for status update
           const pollInterval = setInterval(async () => {
@@ -93,6 +93,47 @@ export default function ChatInterface({ contract }: ChatInterfaceProps) {
               console.error("Error polling contract status:", error);
             }
           }, 3000);
+
+          // Cleanup interval on unmount
+          return () => clearInterval(pollInterval);
+        }
+        // If status is PENDING, show chat but poll every 10 seconds
+        else if (status.status === "PENDING") {
+          setShowChat(true);
+
+          // Poll every 10 seconds for status update
+          const pollInterval = setInterval(async () => {
+            try {
+              console.log("[ChatInterface] Polling PENDING status...");
+              const updatedStatus = await fetchContractStatus(
+                contract.contract_id
+              );
+              console.log("[ChatInterface] Updated status:", updatedStatus);
+              setContractStatus(updatedStatus);
+
+              if (updatedStatus.status === "DONE") {
+                clearInterval(pollInterval);
+                console.log(
+                  "[ChatInterface] Status changed to DONE, refreshing..."
+                );
+
+                // Force refresh to show analysis results
+                if (updatedStatus.summary) {
+                  setShowSummary(true);
+                  setShowChat(false);
+                } else {
+                  // If no summary, stay in chat but update status
+                  setShowChat(true);
+                }
+              } else if (updatedStatus.status === "PENDING") {
+                // Status changed from PENDING to PROCESSING
+                console.log("[ChatInterface] Status changed to PROCESSING");
+                setContractStatus(updatedStatus);
+              }
+            } catch (error) {
+              console.error("Error polling PENDING contract status:", error);
+            }
+          }, 10000); // 10 seconds
 
           // Cleanup interval on unmount
           return () => clearInterval(pollInterval);
@@ -516,10 +557,17 @@ export default function ChatInterface({ contract }: ChatInterfaceProps) {
                 variant="outline"
                 size="sm"
                 onClick={handleRecheckAnalysis}
-                className="text-blue-600 border-blue-600 hover:bg-blue-50"
+                disabled={contractStatus?.status === "PENDING"}
+                className={`${
+                  contractStatus?.status === "PENDING"
+                    ? "text-gray-400 border-gray-300 cursor-not-allowed"
+                    : "text-blue-600 border-blue-600 hover:bg-blue-50"
+                }`}
               >
                 <BarChart3 className="w-4 h-4 mr-2" />
-                Lihat Analisis
+                {contractStatus?.status === "PENDING"
+                  ? "Analisis Pending"
+                  : "Lihat Analisis"}
               </Button>
 
               {/* Connection Status */}
@@ -563,6 +611,24 @@ export default function ChatInterface({ contract }: ChatInterfaceProps) {
                 >
                   ×
                 </button>
+              </div>
+            </div>
+          )}
+
+          {/* PENDING Status Alert */}
+          {contractStatus?.status === "PENDING" && (
+            <div className="mt-3 bg-blue-50 border border-blue-200 rounded-lg p-3">
+              <div className="flex items-center">
+                <Loader2 className="w-4 h-4 text-blue-600 mr-2 animate-spin" />
+                <div>
+                  <span className="text-sm text-blue-800 font-medium">
+                    Kontrak sedang dianalisis
+                  </span>
+                  <p className="text-xs text-blue-600 mt-1">
+                    Biasanya membutuhkan waktu 1-3 menit. Anda masih bisa
+                    menggunakan chat, namun analisis belum tersedia.
+                  </p>
+                </div>
               </div>
             </div>
           )}
