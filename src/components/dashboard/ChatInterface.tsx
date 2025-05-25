@@ -158,6 +158,8 @@ export default function ChatInterface({ contract }: ChatInterfaceProps) {
   // WebSocket hook - only initialize when showChat is true
   const handleNewMessage = useCallback((message: ChatMessage) => {
     console.log("[ChatInterface] Received raw message:", message);
+    console.log("[ChatInterface] Message content:", message.message);
+    console.log("[ChatInterface] Message type:", typeof message.message);
 
     setMessages((prev) => {
       const newMessages = [...prev, message];
@@ -265,6 +267,13 @@ export default function ChatInterface({ contract }: ChatInterfaceProps) {
       // Try to parse if it looks like a JSON string
       if (text.startsWith('"') && text.endsWith('"')) {
         formattedText = JSON.parse(text);
+      }
+      // Check if the text itself is a JSON object with assistant_message
+      else if (text.startsWith("{") && text.includes("assistant_message")) {
+        const parsed = JSON.parse(text);
+        if (parsed.assistant_message) {
+          formattedText = parsed.assistant_message;
+        }
       }
     } catch {
       // If parsing fails, continue with original text

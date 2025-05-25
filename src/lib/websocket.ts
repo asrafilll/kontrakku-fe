@@ -6,7 +6,12 @@ export interface WebSocketMessage {
 
 export interface WebSocketResponse {
   type?: string;
-  message?: string;
+  message?:
+    | string
+    | {
+        assistant_message?: string;
+        references_numbers?: number[] | string[];
+      };
   assistant_message?: string;
   references_numbers?: number[] | null;
   data?: ChatMessage;
@@ -17,10 +22,11 @@ export class ChatWebSocket {
   private contractId: string;
   private baseUrl: string = "ws://194.233.68.50:8000";
   private reconnectAttempts: number = 0;
-  private maxReconnectAttempts: number = 3;
-  private reconnectDelay: number = 2000;
+  private maxReconnectAttempts: number = 5;
+  private reconnectDelay: number = 3000;
   private connectionTimeout: NodeJS.Timeout | null = null;
   private isIntentionalClose: boolean = false;
+  private pingInterval: NodeJS.Timeout | null = null;
 
   // Event callbacks
   public onMessage: ((message: ChatMessage) => void) | null = null;
@@ -65,36 +71,94 @@ export class ChatWebSocket {
           clearTimeout(this.connectionTimeout);
           this.connectionTimeout = null;
         }
+
+        // Start ping interval to keep connection alive
+        this.startPingInterval();
+
         this.onConnectionChange?.(true);
       };
 
       this.ws.onmessage = (event) => {
         try {
           console.log("[WebSocket] Received message:", event.data);
-          const data: WebSocketResponse = JSON.parse(event.data);
+
+          let messageData = event.data;
+
+          // Handle case where data might be double-encoded JSON
+          if (typeof messageData === "string" && messageData.startsWith('"{')) {
+            try {
+              messageData = JSON.parse(messageData);
+            } catch {
+              console.warn("[WebSocket] Failed to parse double-encoded JSON");
+            }
+          }
+
+          // Parse the main JSON
+          const parsedData: WebSocketResponse = JSON.parse(messageData);
+          console.log("[WebSocket] Parsed data:", parsedData);
+
+          // Handle ping/pong responses
+          if (parsedData.type === "pong") {
+            console.log("[WebSocket] Received pong");
+            return;
+          }
 
           // Handle the actual server response format
-          if (data.assistant_message) {
+          if (parsedData.assistant_message) {
             const chatMessage: ChatMessage = {
               role: "assistant",
-              message: data.assistant_message,
+              message: parsedData.assistant_message,
               created_at: new Date().toISOString(),
             };
+            console.log("[WebSocket] Sending assistant message:", chatMessage);
             this.onMessage?.(chatMessage);
-          } else if (data.data) {
-            this.onMessage?.(data.data);
-          } else if (data.message) {
+          } else if (
+            typeof parsedData.message === "object" &&
+            parsedData.message !== null &&
+            "assistant_message" in parsedData.message
+          ) {
+            // Handle nested structure: {message: {assistant_message: "..."}}
+            const nestedMessage = parsedData.message as {
+              assistant_message: string;
+            };
             const chatMessage: ChatMessage = {
               role: "assistant",
-              message: data.message,
+              message: nestedMessage.assistant_message,
               created_at: new Date().toISOString(),
             };
+            console.log(
+              "[WebSocket] Sending nested assistant message:",
+              chatMessage
+            );
+            this.onMessage?.(chatMessage);
+          } else if (parsedData.data) {
+            console.log("[WebSocket] Sending data message:", parsedData.data);
+            this.onMessage?.(parsedData.data);
+          } else if (
+            parsedData.message &&
+            typeof parsedData.message === "string"
+          ) {
+            const chatMessage: ChatMessage = {
+              role: "assistant",
+              message: parsedData.message,
+              created_at: new Date().toISOString(),
+            };
+            console.log("[WebSocket] Sending regular message:", chatMessage);
             this.onMessage?.(chatMessage);
           } else {
-            console.warn("[WebSocket] Unhandled message format:", data);
+            console.warn("[WebSocket] Unhandled message format:", parsedData);
+            // Fallback: send the raw data as message if no recognized format
+            const chatMessage: ChatMessage = {
+              role: "assistant",
+              message: JSON.stringify(parsedData),
+              created_at: new Date().toISOString(),
+            };
+            console.log("[WebSocket] Sending fallback message:", chatMessage);
+            this.onMessage?.(chatMessage);
           }
         } catch (error) {
           console.error("[WebSocket] Error parsing message:", error);
+          console.error("[WebSocket] Raw data:", event.data);
           this.onError?.("Failed to parse message from server");
         }
       };
@@ -103,6 +167,9 @@ export class ChatWebSocket {
         console.log(
           `[WebSocket] Connection closed - Code: ${event.code}, Reason: ${event.reason || "No reason provided"}`
         );
+
+        // Stop ping interval
+        this.stopPingInterval();
 
         if (this.connectionTimeout) {
           clearTimeout(this.connectionTimeout);
@@ -236,6 +303,8 @@ export class ChatWebSocket {
     console.log("[WebSocket] Intentional disconnect");
     this.isIntentionalClose = true;
 
+    this.stopPingInterval();
+
     if (this.connectionTimeout) {
       clearTimeout(this.connectionTimeout);
       this.connectionTimeout = null;
@@ -244,6 +313,30 @@ export class ChatWebSocket {
     if (this.ws) {
       this.ws.close(1000, "Component unmounting");
       this.ws = null;
+    }
+  }
+
+  private startPingInterval(): void {
+    // Clear any existing ping interval
+    this.stopPingInterval();
+
+    // Send ping every 30 seconds to keep connection alive
+    this.pingInterval = setInterval(() => {
+      if (this.ws && this.ws.readyState === WebSocket.OPEN) {
+        try {
+          this.ws.send(JSON.stringify({ type: "ping" }));
+          console.log("[WebSocket] Sent ping");
+        } catch (error) {
+          console.error("[WebSocket] Error sending ping:", error);
+        }
+      }
+    }, 30000);
+  }
+
+  private stopPingInterval(): void {
+    if (this.pingInterval) {
+      clearInterval(this.pingInterval);
+      this.pingInterval = null;
     }
   }
 
